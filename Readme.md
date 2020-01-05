@@ -12,7 +12,7 @@ http://funofdiy.blogspot.com/2013/10/a-raspberry-pi-controlled-mini-laser.html
 Check my other post as well
 funofdiy.blogspot.com
 
-## Alt-H1
+***
 
 ## Gcode_executer.py
 This is the main program. You need to modify line 25 (G code file name), line 29 (pin numbers 
@@ -40,7 +40,7 @@ can process G code, especially the circular interpolation G02 and G03, correctly
 A simple G code which plots several straight lines to make a grid. Perfect code to test the 
 machine and make a coordinate system!
 
-## Alt-H1
+***
 
 As mentioned at the beginning of this post, D. Miller made some improvement to my code so that the code 
 can work along with the inkscape GCodeTools extension and allow remote engraving via another small python 
