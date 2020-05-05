@@ -31,12 +31,10 @@ MX=Bipolar_Stepper_Motor(11,12,15,13)     #pin number for a1,a2,b1,b2.  a1 and a
 
 MY=Bipolar_Stepper_Motor(16,18,37,36)       
 
-Laser_switch=32
+Pen_switch=32
 
 dx=0.075 #resolution in x direction. Unit: mm
 dy=0.076 #resolution in y direction. Unit: mm
-
-Engraving_speed=0.4 #unit=mm/sec=0.04in/sec
 
 #######B#########################################################################################
 ################################################################################################
@@ -46,8 +44,8 @@ Engraving_speed=0.4 #unit=mm/sec=0.04in/sec
 ################################################################################################
 ################################################################################################
     
-GPIO.setup(Laser_switch,GPIO.OUT)
-MZ = GPIO.PWM(Laser_switch,50)
+GPIO.setup(Pen_switch,GPIO.OUT)
+MZ = GPIO.PWM(Pen_switch,50)
 MZ.start(0)
 
 def SetPenDown(isdown):
@@ -57,8 +55,6 @@ def SetPenDown(isdown):
     MZ.ChangeDutyCycle(2+(angle/18))
     time.sleep(0.5)
     MZ.ChangeDutyCycle(0)
-
-speed=Engraving_speed/min(dx,dy)      #step/sec
 
 ################################################################################################
 ################################################################################################
@@ -100,7 +96,7 @@ def IJposition(lines):
 
     return i_pos,j_pos
 
-def moveto(MX,x_pos,dx,MY,y_pos,dy,speed,engraving):
+def moveto(MX,x_pos,dx,MY,y_pos,dy,engraving):
 #Move to (x_pos,y_pos) (in real unit)
     stepx=int(round(x_pos/dx))-MX.position
     stepy=int(round(y_pos/dy))-MY.position
@@ -113,7 +109,7 @@ def moveto(MX,x_pos,dx,MY,y_pos,dy,speed,engraving):
             Motor_control.Motor_Step(MX,stepx,MY,stepy,25)
         else:
             print('Laser on, movement: Dx=', stepx, '  Dy=', stepy)
-            Motor_control.Motor_Step(MX,stepx,MY,stepy,speed)
+            Motor_control.Motor_Step(MX,stepx,MY,stepy)
     return 0
 
 ###########################################################################################
@@ -161,7 +157,7 @@ try:#read and execute G code
                 engraving=True
                 
             [x_pos,y_pos]=XYposition(lines)
-            moveto(MX,x_pos,dx,MY,y_pos,dy,speed,engraving)
+            moveto(MX,x_pos,dx,MY,y_pos,dy,engraving)
             
         elif (lines[0:3]=='G02')|(lines[0:3]=='G03'): #circular interpolation
             old_x_pos=x_pos
@@ -205,7 +201,7 @@ try:#read and execute G code
                 tmp_theta=i*theta/no_step
                 tmp_x_pos=xcenter+e1[0]*cos(tmp_theta)+e2[0]*sin(tmp_theta)
                 tmp_y_pos=ycenter+e1[1]*cos(tmp_theta)+e2[1]*sin(tmp_theta)
-                moveto(MX,tmp_x_pos,dx,MY, tmp_y_pos,dy,speed,True)
+                moveto(MX,tmp_x_pos,dx,MY, tmp_y_pos,dy,True)
         
 except KeyboardInterrupt:
     pass

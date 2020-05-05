@@ -33,7 +33,7 @@ class Bipolar_Stepper_Motor:
         self.dir=0        
         self.position=0
         
-    def move(self, dir, steps, delay=0.2):
+    def move(self, dir, steps):
         for _ in range(steps):
             next_phase=(self.phase+dir) % num_phase
             
@@ -46,7 +46,7 @@ class Bipolar_Stepper_Motor:
             self.dir=dir
             self.position+=dir
             
-            time.sleep(delay)
+            time.sleep(0.03)
 
     def unhold(self):
         GPIO.output(self.a1,0)
