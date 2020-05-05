@@ -23,7 +23,7 @@ from math import pi, sin, cos, sqrt, acos, asin
 ################################################################################################
 
 #filename='caltech_symbol.nc' #file name of the G code commands
-filename = 'name_en.nc'
+filename = 'grid.nc'
 
 GPIO.setmode(GPIO.BOARD)
 
@@ -49,12 +49,15 @@ MZ = GPIO.PWM(Pen_switch,50)
 MZ.start(0)
 
 def SetPenDown(isdown):
-    angle = 90
+    # angle = 90
     if(isdown == False):
-        angle = 117
-    MZ.ChangeDutyCycle(2+(angle/18))
-    time.sleep(0.5)
-    MZ.ChangeDutyCycle(0)
+        print('Pen Down')
+    else:
+        print('Pen UP')
+        # angle = 117
+    # MZ.ChangeDutyCycle(2+(angle/18))
+    # time.sleep(0.5)
+    # MZ.ChangeDutyCycle(0)
 
 ################################################################################################
 ################################################################################################
@@ -106,9 +109,11 @@ def moveto(MX,x_pos,dx,MY,y_pos,dy,engraving):
     if ~engraving:
         if lines[0:3]=='G0 ': #fast movement
             print('No Laser, fast movement: Dx=', stepx, '  Dy=', stepy)
-            Motor_control.Motor_Step(MX,stepx,MY,stepy,25)
+            input("continue...")
+            Motor_control.Motor_Step(MX,stepx,MY,stepy)
         else:
             print('Laser on, movement: Dx=', stepx, '  Dy=', stepy)
+            input("continue...")
             Motor_control.Motor_Step(MX,stepx,MY,stepy)
     return 0
 
@@ -122,30 +127,38 @@ def moveto(MX,x_pos,dx,MY,y_pos,dy,engraving):
 
 try:#read and execute G code
     for lines in open(filename,'r'):
+        print(lines[0:3])
+        input("continue...")
         if lines==[]:
             1 #blank lines
         elif lines[0:3]=='G90':
             print('start')
+            input("continue...")
             
         elif lines[0:3]=='G20':# working in inch
             dx/=25.4
             dy/=25.4
             print('Working in inch')
+            input("continue...")
               
         elif lines[0:3]=='G21':# working in mm
-            print('Working in mm')  
+            print('Working in mm')
+            input("continue...")
             
         elif lines[0:3]=='M05':
             SetPenDown(False)
             print('Laser turned off')
+            input("continue...")
             
         elif lines[0:3]=='M03':
             SetPenDown(True)
             print('Laser turned on')
+            input("continue...")
 
         elif lines[0:3]=='M02':
             SetPenDown(False)
             print('finished. shuting down')
+            input("continue...")
             break
         elif (lines[0:3]=='G1F')|(lines[0:4]=='G1 F'):
             1#do nothing
@@ -207,7 +220,7 @@ except KeyboardInterrupt:
     pass
 
 SetPenDown(False)   # turn off laser
-moveto(MX,0,dx,MY,0,dy,25,False)  # move back to Origin
+moveto(MX,0,dx,MY,0,dy,False)  # move back to Origin
 
 MZ.stop()
 MX.unhold()

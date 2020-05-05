@@ -48,7 +48,7 @@ def Motor_Step(stepper1, step1, stepper2, step2):
         micro_step1=total_micro_step/step1
         micro_step2=total_micro_step/step2
     
-    for i in range(1,total_micro_step+1):    #i is the iterator for the micro_step. i cannot start from 0
+    for i in range(1,int(total_micro_step)+1):    #i is the iterator for the micro_step. i cannot start from 0
         if ((i % micro_step1)==0):#motor 1 need to turn one step
             stepper1.move(dir1,1)
             
