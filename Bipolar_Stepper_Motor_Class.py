@@ -16,7 +16,6 @@ class Bipolar_Stepper_Motor:
     
     def __init__(self,a1,a2,b1,b2):
     #initial a Bipolar_Stepper_Moter objects by assigning the pins
-        self.position = 0
         self.axis = 'X'
         if(a1 == 16):
             self.axis = 'Y'
@@ -38,17 +37,16 @@ class Bipolar_Stepper_Motor:
         self.position=0
         
     def move(self, dir, steps):
-        self.position = self.position + (steps * dir)
-        print('Move:' + self.axis + ' steps:' + str(steps) + ' direction:' + str(dir))
-        print('Position ' + self.axis + ': ' + str(self.position))
+        #print('Move:' + self.axis + ' steps:' + str(steps) + ' direction:' + str(dir))
+        #print('Position ' + self.axis + ': ' + str(self.position))
         
         for _ in range(steps):
             next_phase=(self.phase+dir) % num_phase
 
-            # GPIO.output(self.a1,phase_seq[next_phase][0])
-            # GPIO.output(self.b2,phase_seq[next_phase][1])
-            # GPIO.output(self.a2,phase_seq[next_phase][2])
-            # GPIO.output(self.b1,phase_seq[next_phase][3])
+            GPIO.output(self.a1,phase_seq[next_phase][0])
+            GPIO.output(self.b2,phase_seq[next_phase][1])
+            GPIO.output(self.a2,phase_seq[next_phase][2])
+            GPIO.output(self.b1,phase_seq[next_phase][3])
             
             self.phase=next_phase
             self.dir=dir
