@@ -39,9 +39,14 @@ class Bipolar_Stepper_Motor:
     def move(self, dir, steps):
         #print('Move:' + self.axis + ' steps:' + str(steps) + ' direction:' + str(dir))
         #print('Position ' + self.axis + ': ' + str(self.position))
-        
+
+        multiplier = 1
+
+        if(self.a1 == 11):
+            multiplier = -1
+
         for _ in range(steps):
-            next_phase=(self.phase+dir) % num_phase
+            next_phase=(self.phase+(multiplier * dir)) % num_phase
 
             GPIO.output(self.a1,phase_seq[next_phase][0])
             GPIO.output(self.b2,phase_seq[next_phase][1])
