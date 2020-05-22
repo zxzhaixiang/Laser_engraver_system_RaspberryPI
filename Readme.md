@@ -2,6 +2,8 @@
 
 This package includes python class and scripts for Raspberry Pi to control a home-made pen plotter.
 
+![Example](https://raw.githubusercontent.com/flodek/Mini_pen_plotter_RaspberryPI/master/example_1.png)
+
 ![Example](https://raw.githubusercontent.com/flodek/Mini_pen_plotter_RaspberryPI/master/example.png)
 
 To build and set up the plotter I mainly followed the instructions below
